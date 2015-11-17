@@ -28,4 +28,4 @@ EXAMPLE USAGE
             end
         end
 
-        4) That's it.
+        2) That's it.
