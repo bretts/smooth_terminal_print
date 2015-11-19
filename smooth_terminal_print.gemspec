@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'smooth_terminal_print'
-  s.version     = '0.0.1'
+  s.version     = '0.0.2'
   s.date        = '2015-11-17'
   s.summary     = "Allows the user to smoothly update printing to the terminal while in a tight loop"
   s.description = "Adds SmoothTerminalPrint.start and SmoothTerminalPrint.stop"
