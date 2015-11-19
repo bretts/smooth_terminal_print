@@ -14,7 +14,7 @@ EXAMPLE USAGE
         1) gem install smooth_terminal print
 
         require 'smooth_terminal_print'
-        trap('SIGINT') { SmoothTerminalPrint::stop; exit }
+        trap('SIGINT') { SmoothTerminalPrint.stop; exit }
 
         loop do
             stars   = ''

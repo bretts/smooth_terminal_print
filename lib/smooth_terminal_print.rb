@@ -27,6 +27,7 @@ module SmoothTerminalPrint
     end
 
     def stop
+        $stdout = STDOUT
         move_to_bottom
         show_cursor
     end
