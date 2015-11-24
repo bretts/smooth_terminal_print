@@ -20,8 +20,7 @@ EXAMPLE USAGE
             stars   = ''
             number  = rand(100)
             number.times { stars << '*' }
-            stars.length.upto(100) { stars << ' '}
-            
+
             SmoothTerminalPrint.start do
                 puts number
                 puts stars

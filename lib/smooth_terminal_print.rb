@@ -1,29 +1,24 @@
 require 'stringio'
+require_relative './terminal_actions'
 
 module SmoothTerminalPrint
+    include TerminalActions
     extend self
 
     def start(&block)
-        @stp_reset_timer ||= Time.now.to_i
+        get_screen_dimensions
         
-        if(Time.now.to_i - @stp_reset_timer > 1)
-            clear_screen
-            @stp_reset_timer = Time.now.to_i
-        end
         hide_cursor
+        
         move_to_top_left
         
-        out = StringIO.new
-        $stdout = out
+        io = StringIO.new
+        $stdout = io
         yield
-        out.rewind
-
-        num_lines = ((`tput lines`).strip.to_i) - 5
-        num_lines.times do
-            STDOUT.puts out.gets
-        end
-
         $stdout = STDOUT
+        io.rewind
+
+        print_text(io)
     end
 
     def stop
@@ -33,23 +28,33 @@ module SmoothTerminalPrint
     end
 
     private
-    def clear_screen
-        print "\e[2J"
+    def print_text(string_io)
+        @num_lines.times do
+            line = string_io.gets
+            break if line.nil?
+
+            line.strip!
+            line = line[0..@columns]
+            line.length.upto(@columns) { line << ' ' }
+            line << "\n"
+            puts line
+        end
     end
 
-    def hide_cursor
-        print "\e[?25l"
-    end
+    def get_screen_dimensions
+        @stp_reset_timer ||= nil
+        
+        if(@stp_reset_timer == nil || Time.now.to_i - @stp_reset_timer > 3)
+            old_num_lines   = @num_lines
+            old_num_cols    = @columns
+            @num_lines      = (`tput lines`).strip.to_i - 5
+            @columns        = `tput cols`.strip.to_i - 5
 
-    def move_to_top_left
-        print "\e[H"
-    end
-
-    def show_cursor
-        print "\e[?25h"
-    end
-
-    def move_to_bottom
-        print "\e[2000E"
+            if(old_num_lines != @num_lines || old_num_cols != @columns)
+                clear_screen
+            end
+            
+            @stp_reset_timer = Time.now.to_i
+        end
     end
 end
