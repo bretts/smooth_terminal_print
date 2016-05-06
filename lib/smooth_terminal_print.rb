@@ -29,12 +29,16 @@ module SmoothTerminalPrint
 
     private
     def print_text(string_io)
-        @num_lines.times do
+        0.upto(@num_lines) do
             line = string_io.gets
-            break if line.nil?
 
-            line.strip!
-            line = line[0..@columns]
+            if line.nil?
+                line = ''
+            else
+                line.strip!
+                line = line[0..@columns]
+            end
+
             line.length.upto(@columns) { line << ' ' }
             line << "\n"
             puts line
