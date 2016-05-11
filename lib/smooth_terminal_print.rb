@@ -51,7 +51,7 @@ module SmoothTerminalPrint
         if(@stp_reset_timer == nil || Time.now.to_i - @stp_reset_timer > 3)
             old_num_lines   = @num_lines
             old_num_cols    = @columns
-            @num_lines      = (`tput lines`).strip.to_i - 5
+            @num_lines      = (`tput lines`).strip.to_i - 2
             @columns        = `tput cols`.strip.to_i - 5
 
             if(old_num_lines != @num_lines || old_num_cols != @columns)
