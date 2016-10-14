@@ -7,11 +7,11 @@ module SmoothTerminalPrint
 
     def start(&block)
         get_screen_dimensions
-        
+
         hide_cursor
-        
+
         move_to_top_left
-        
+
         io = StringIO.new
         $stdout = io
         yield
@@ -36,7 +36,13 @@ module SmoothTerminalPrint
                 line = ''
             else
                 line.strip!
-                line = line[0..@columns]
+                # If the line includes ANSI escape codes then I'm not sure currently how to
+                # truncate them without creating a mess. So just skip them for now and suffer
+                # the consequences, being that, the screen will not refresh properly if there are ANSI
+                # escape codes in the string, AND the length of said string exceeds the total columns available.
+                if(!line.include?("\e["))
+                    line = line[0..@columns]
+                end
             end
 
             line.length.upto(@columns) { line << ' ' }
@@ -47,7 +53,7 @@ module SmoothTerminalPrint
 
     def get_screen_dimensions
         @stp_reset_timer ||= nil
-        
+
         if(@stp_reset_timer == nil || Time.now.to_i - @stp_reset_timer > 3)
             old_num_lines   = @num_lines
             old_num_cols    = @columns
@@ -57,7 +63,7 @@ module SmoothTerminalPrint
             if(old_num_lines != @num_lines || old_num_cols != @columns)
                 clear_screen
             end
-            
+
             @stp_reset_timer = Time.now.to_i
         end
     end
