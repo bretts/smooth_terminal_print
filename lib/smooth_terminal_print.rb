@@ -45,8 +45,7 @@ module SmoothTerminalPrint
                 end
             end
 
-            line.length.upto(@columns) { line << ' ' }
-            line << "\n"
+            line << "\e[K"
             puts line
         end
     end
