@@ -36,13 +36,6 @@ module SmoothTerminalPrint
                 line = ''
             else
                 line.strip!
-                # If the line includes ANSI escape codes then I'm not sure currently how to
-                # truncate them without creating a mess. So just skip them for now and suffer
-                # the consequences, being that, the screen will not refresh properly if there are ANSI
-                # escape codes in the string, AND the length of said string exceeds the total columns available.
-                if(!line.include?("\e["))
-                    line = line[0..@columns]
-                end
             end
 
             line << "\e[K"
