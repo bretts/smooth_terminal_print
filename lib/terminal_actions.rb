@@ -1,23 +1,27 @@
 module SmoothTerminalPrint
-    module TerminalActions
-        def clear_screen
-            print "\e[2J"
-        end
+	module TerminalActions
+		def clear_screen
+			return "\e[2J"
+		end
 
-        def hide_cursor
-            print "\e[?25l"
-        end
+		def hide_cursor
+			return "\e[?25l"
+		end
 
-        def move_to_top_left
-            print "\e[H"
-        end
+		def move_to_top_left
+			return "\e[H"
+		end
 
-        def show_cursor
-            print "\e[?25h"
-        end
+		def clear_to_line_end
+			return "\e[K"
+		end
 
-        def move_to_bottom
-            print "\e[2000E"
-        end
-    end
+		def show_cursor
+			return "\e[?25h"
+		end
+
+		def move_to_bottom
+			return "\e[2000E"
+		end
+	end
 end

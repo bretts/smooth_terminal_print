@@ -1,30 +1,22 @@
-SmoothTerminalPrint
-===========
+# SmoothTerminalPrint
 
-PURPOSE
--------
-The purpose of this program is smoothly continoulsy update printing data to the terminal window while in a tight loop
+The purpose of this program is to animate printing text in a terminal window while in a tight loop
 
-FEATURES
---------
-Adds ability to call SmoothTerminalPrint.start and SmoothTerminalPrint.stop
 
-EXAMPLE USAGE
--------------
-        1) gem install smooth_terminal print
+## Example Usage
 
-        require 'smooth_terminal_print'
-        trap('SIGINT') { SmoothTerminalPrint.stop; exit }
+```
+require 'smooth_terminal_print'
 
-        loop do
-            stars   = ''
-            number  = rand(100)
-            number.times { stars << '*' }
+loop do
+    io = StringIO.new
 
-            SmoothTerminalPrint.start do
-                puts number
-                puts stars
-            end
-        end
+    20.times do
+        s = ''
+        rand(100).times { s << '*' }
+        io.puts s
+    end
 
-        2) That's it.
+    SmoothTerminalPrint.start_stp(io)
+end
+```

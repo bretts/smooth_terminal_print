@@ -4,33 +4,28 @@ require_relative './terminal_actions'
 module SmoothTerminalPrint
     include TerminalActions
     extend self
+    trap('SIGINT') { SmoothTerminalPrint.stop_stp; exit }
+    at_exit        { SmoothTerminalPrint.stop_stp }
 
-    def start(&block)
+    def start_stp(io)
         get_screen_dimensions
-
-        hide_cursor
-
-        move_to_top_left
-
-        io = StringIO.new
-        $stdout = io
-        yield
-        $stdout = STDOUT
-        io.rewind
+        print(hide_cursor)
+        print(move_to_top_left)
 
         print_text(io)
     end
 
-    def stop
-        $stdout = STDOUT
-        move_to_bottom
-        show_cursor
+    def stop_stp
+        print(move_to_bottom)
+        print(show_cursor)
     end
 
     private
-    def print_text(string_io)
+    def print_text(io)
+        io.rewind
+
         0.upto(@num_lines) do
-            line = string_io.gets
+            line = io.gets
 
             if line.nil?
                 line = ''
@@ -38,7 +33,7 @@ module SmoothTerminalPrint
                 line.strip!
             end
 
-            line << "\e[K"
+            line << clear_to_line_end
             puts line
         end
     end
