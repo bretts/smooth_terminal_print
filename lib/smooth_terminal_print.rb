@@ -12,11 +12,20 @@ class SmoothTerminalPrint
 		at_exit          { stop_smooth_printing_mode }
 	end
 
-	def print_smoothly(io)
+	def print_smoothly(io=nil, &block)
 		print(hide_cursor)
 		print(move_to_top_left)
 
-		print_text(io)
+		if(io)
+			print_text(io)
+		else
+			io = StringIO.new
+			$stdout = io
+			yield
+			$stdout = STDOUT
+			io.rewind
+			print_text(io)
+		end
 	end
 
 	def stop_smooth_printing_mode
