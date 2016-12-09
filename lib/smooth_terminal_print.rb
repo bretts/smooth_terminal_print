@@ -1,34 +1,35 @@
 require 'stringio'
 require_relative './terminal_actions'
 
-module SmoothTerminalPrint
+class SmoothTerminalPrint
 	include TerminalActions
-	extend self
-	trap('SIGINT')   { SmoothTerminalPrint.stop_stp; exit }
-	trap('SIGWINCH') { get_screen_dimensions }
-	at_exit          { SmoothTerminalPrint.stop_stp }
 
-	def start_stp(io)
-		get_screen_dimensions
+	def initialize
+		update_screen_dimensions
+
+		trap('SIGINT')   { stop_smooth_printing_mode; exit }
+		trap('SIGWINCH') { update_screen_dimensions }
+		at_exit          { stop_smooth_printing_mode }
+	end
+
+	def print_smoothly(io)
 		print(hide_cursor)
 		print(move_to_top_left)
 
 		print_text(io)
 	end
 
-	def stop_stp
+	def stop_smooth_printing_mode
 		print(move_to_bottom)
 		print(show_cursor)
 	end
 
-	def get_screen_dimensions
+	private
+	def update_screen_dimensions
 		@num_lines = `tput lines`.strip.to_i - 2
 		@columns   = `tput cols`.strip.to_i - 5
-
-		print clear_screen
 	end
 
-	private
 	def print_text(io)
 		io.rewind
 

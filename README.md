@@ -8,6 +8,7 @@ The purpose of this program is to animate printing text in a terminal window whi
 ```
 require 'smooth_terminal_print'
 
+smooth_terminal_print = SmoothTerminalPrint.new
 loop do
     io = StringIO.new
 
@@ -17,6 +18,6 @@ loop do
         io.puts s
     end
 
-    SmoothTerminalPrint.start_stp(io)
+    smooth_terminal_print.print_smoothly(io)
 end
 ```
