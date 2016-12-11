@@ -52,6 +52,8 @@ class SmoothTerminalPrint
 			end
 
 			line << clear_to_line_end
+			line << "\r\n"
+
 			puts line
 		end
 	end

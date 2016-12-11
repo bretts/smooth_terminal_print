@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name        = 'smooth_terminal_print'
-  s.version     = '2.1.0'
-  s.date        = '2016-12-09'
+  s.version     = '2.2.0'
+  s.date        = '2016-12-11'
   s.summary     = "Animate printing text in a terminal window while in a tight loop"
   s.description = "Animate printing text in a terminal window while in a tight loop"
   s.authors     = ["Brett Sykes"]
